@@ -6,7 +6,7 @@
 }
 .ContactButton {
     margin-left: 1280px !important;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
     margin-top: -1px;
 }
 
@@ -55,12 +55,18 @@ ul li p {
     text-align: center;
     font-size: 100px;
     font-family: 'Playfair Display', serif;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Subtle text outline */
+    margin-bottom: 20px; 
+    -webkit-text-stroke: .5px rgb(0, 0, 0); /* White text stroke for WebKit browsers */
+    text-stroke: .5px rgb(0, 0, 0); /* White text stroke for other browsers */
+
 }
 {
     background-color: #ececec;
 }
 body {
-    background-color: #ececec;
+    background-color: #f3f3f3;
 }
 form {
     background-color: white;

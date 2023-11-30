@@ -3,7 +3,14 @@ const getState = ({ getStore, setStore }) => {
 	return {
 	  store: {
 		contacts: [
-		  
+			{
+				id: 1,
+				firstName: "John",
+				lastName: "Doe",
+				address: "123 Main St",
+				phoneNumber: "555-1234",
+				email: "john.doe@example.com"
+			  }
 		]
 	  },
 	  actions: {
