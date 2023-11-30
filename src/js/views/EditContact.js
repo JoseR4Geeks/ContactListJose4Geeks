@@ -1,14 +1,15 @@
-// demo.js
-import React, { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+// EditContact.js
+import React, { useState, useEffect, useContext } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
-import "../../styles/demo.css";
+import "../../styles/editContact.css"; // You can create a separate CSS file for styling if needed
 
-export const AddContactForm = () => {
-  const { actions } = useContext(Context);
+const EditContact = () => {
+  const { store, actions } = useContext(Context);
+  const { contactId } = useParams();
   const navigate = useNavigate();
 
-  const [contactInfo, setContactInfo] = useState({
+  const [editedContact, setEditedContact] = useState({
     firstName: "",
     lastName: "",
     address: "",
@@ -16,21 +17,31 @@ export const AddContactForm = () => {
     email: ""
   });
 
+  // Fetch contact details based on the contactId when the component mounts
+  useEffect(() => {
+    const contactDetails = store.contacts.find(
+      (contact) => contact.id === parseInt(contactId, 10)
+    );
+
+    if (contactDetails) {
+      setEditedContact({
+        firstName: contactDetails.firstName,
+        lastName: contactDetails.lastName,
+        address: contactDetails.address,
+        phoneNumber: contactDetails.phoneNumber,
+        email: contactDetails.email
+      });
+    }
+  }, [store.contacts, contactId]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setContactInfo({ ...contactInfo, [name]: value });
+    setEditedContact({ ...editedContact, [name]: value });
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    actions.addContact(contactInfo);
-    setContactInfo({
-      firstName: "",
-      lastName: "",
-      address: "",
-      phoneNumber: "",
-      email: ""
-    });
+    actions.updateContact(contactId, editedContact);
     navigate("/");
   };
 
@@ -46,9 +57,8 @@ export const AddContactForm = () => {
             className="form-control"
             id="firstName"
             name="firstName"
-            value={contactInfo.firstName}
+            value={editedContact.firstName}
             onChange={handleInputChange}
-			placeholder="First Name"
           />
         </div>
         <div className="mb-3">
@@ -60,9 +70,8 @@ export const AddContactForm = () => {
             className="form-control"
             id="lastName"
             name="lastName"
-            value={contactInfo.lastName}
+            value={editedContact.lastName}
             onChange={handleInputChange}
-			placeholder="Last Name"
           />
         </div>
         <div className="mb-3">
@@ -74,9 +83,8 @@ export const AddContactForm = () => {
             className="form-control"
             id="address"
             name="address"
-            value={contactInfo.address}
+            value={editedContact.address}
             onChange={handleInputChange}
-			placeholder="Enter address"
           />
         </div>
         <div className="mb-3">
@@ -88,9 +96,8 @@ export const AddContactForm = () => {
             className="form-control"
             id="phoneNumber"
             name="phoneNumber"
-            value={contactInfo.phoneNumber}
+            value={editedContact.phoneNumber}
             onChange={handleInputChange}
-			placeholder="Enter phone"
           />
         </div>
         <div className="mb-3">
@@ -102,19 +109,16 @@ export const AddContactForm = () => {
             className="form-control"
             id="email"
             name="email"
-            value={contactInfo.email}
+            value={editedContact.email}
             onChange={handleInputChange}
-			placeholder="Enter email"
           />
         </div>
-        <button type="submit" className="btn btn-primary btn-block AddContactBtn">
-          Add Contact
+        <button type="submit" className="btn btn-primary">
+          Save Changes
         </button>
       </form>
-      
-      <Link to="/" className="text-primary text-decoration-underline">
-  		or get back to contacts
-		</Link>
     </div>
   );
 };
+
+export default EditContact;
