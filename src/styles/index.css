@@ -5,9 +5,10 @@
     background-color: #5a5a5a !important;
 }
 .ContactButton {
-    margin-left: 1280px !important;
+    margin-left: 66.7%;
     margin-bottom: 15px;
     margin-top: -1px;
+
 }
 
 ul li {
@@ -62,9 +63,8 @@ ul li p {
     text-stroke: .5px rgb(0, 0, 0); /* White text stroke for other browsers */
 
 }
-{
-    background-color: #ececec;
-}
+
+
 body {
     background-color: #f3f3f3;
 }

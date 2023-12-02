@@ -21,17 +21,36 @@ export const AddContactForm = () => {
     setContactInfo({ ...contactInfo, [name]: value });
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    actions.addContact(contactInfo);
-    setContactInfo({
-      firstName: "",
-      lastName: "",
-      address: "",
-      phoneNumber: "",
-      email: ""
-    });
-    navigate("/");
+
+    try {
+      // Fetch to send data to the backend
+      const response = await fetch("http://localhost:3001/contacts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(contactInfo)
+      });
+
+      const data = await response.json();
+
+      // Once the data is successfully added to the backend, update the local state
+      actions.addContact(data.data);
+
+      setContactInfo({
+        firstName: "",
+        lastName: "",
+        address: "",
+        phoneNumber: "",
+        email: ""
+      });
+
+      navigate("/");
+    } catch (error) {
+      console.error("Error adding contact:", error);
+    }
   };
 
   return (
@@ -48,7 +67,7 @@ export const AddContactForm = () => {
             name="firstName"
             value={contactInfo.firstName}
             onChange={handleInputChange}
-			placeholder="First Name"
+            placeholder="First Name"
           />
         </div>
         <div className="mb-3">
@@ -62,7 +81,7 @@ export const AddContactForm = () => {
             name="lastName"
             value={contactInfo.lastName}
             onChange={handleInputChange}
-			placeholder="Last Name"
+            placeholder="Last Name"
           />
         </div>
         <div className="mb-3">
@@ -76,7 +95,7 @@ export const AddContactForm = () => {
             name="address"
             value={contactInfo.address}
             onChange={handleInputChange}
-			placeholder="Enter address"
+            placeholder="Enter address"
           />
         </div>
         <div className="mb-3">
@@ -90,7 +109,7 @@ export const AddContactForm = () => {
             name="phoneNumber"
             value={contactInfo.phoneNumber}
             onChange={handleInputChange}
-			placeholder="Enter phone"
+            placeholder="Enter phone"
           />
         </div>
         <div className="mb-3">
@@ -104,17 +123,17 @@ export const AddContactForm = () => {
             name="email"
             value={contactInfo.email}
             onChange={handleInputChange}
-			placeholder="Enter email"
+            placeholder="Enter email"
           />
         </div>
         <button type="submit" className="btn btn-primary btn-block AddContactBtn">
           Add Contact
         </button>
       </form>
-      
+
       <Link to="/" className="text-primary text-decoration-underline">
-  		or get back to contacts
-		</Link>
+        or get back to contacts
+      </Link>
     </div>
   );
 };
